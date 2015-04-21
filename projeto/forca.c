@@ -65,15 +65,16 @@ int main() {
 		fim = 0;
 		erros = 0;
 
+		int numLetrasUsadas = 0;
+
 		char letrasUsadas[26];
-		char l = 0;
+		numLetrasUsadas = 0;
+
 		int usada = 0;
 
 		do {
 
-			char letrasUsadas[26];
-
-			for (i = 0; i < 26; i++) {
+			for (i = 0; i < strlen(letrasUsadas); i++) {
 				letrasUsadas[i] = '*';
 			}
 
@@ -89,7 +90,9 @@ int main() {
 			scanf("%d", &opc);
 
 			switch (opc) {
-			case 1:
+			do {
+
+				case 1:
 				system("clear");
 
 				printf("%s", cabecalho);
@@ -101,52 +104,59 @@ int main() {
 				printf("\n\n 5 - Informatica: ");
 				printf("\n\n Tema escolhido: ");
 				scanf(" %d", &tema);
-				switch (tema) {
-				case 1:
-					strcpy(dica, "Animal");
-					//Seleciona uma palavra aleatória
-					srand(time(NULL));
-					strcpy(palavra, animal[rand() % ITENS]);
-					break;
-				case 2:
-					strcpy(dica, "Comida");
-					//Seleciona uma palavra aleatória
-					srand(time(NULL));
-					strcpy(palavra, comida[rand() % ITENS]);
-					break;
-				case 3:
-					strcpy(dica, "Fruta");
-					//Seleciona uma palavra aleatória
-					srand(time(NULL));
-					strcpy(palavra, fruta[rand() % ITENS]);
-					break;
-				case 4:
-					strcpy(dica, "Profissao");
-					//Seleciona uma palavra aleatória
-					srand(time(NULL));
-					strcpy(palavra, profissao[rand() % ITENS]);
-					break;
-				case 5:
-					strcpy(dica, "Animal");
-					//Seleciona uma palavra aleatória
-					srand(time(NULL));
-					strcpy(palavra, informatica[rand() % ITENS]);
-					break;
-				}
+
+			} while (tema < 1 || tema > 5);
+
+			switch (tema) {
+			case 1:
+				strcpy(dica, "Animal");
+				//Seleciona uma palavra aleatória
+				srand(time(NULL));
+				strcpy(palavra, animal[rand() % ITENS]);
 				break;
 			case 2:
-				printf("\n Digite a dica: ");
-				scanf(" %[^\n]", dica);
-				printf("\n Digite a palavra a ser adivinhada: ");
-				scanf(" %[^\n]", palavra);
-
-				for (i = 0; i < strlen(palavra); i++) {
-					palavra[i] = toupper(palavra[i]);
-				}
+				strcpy(dica, "Comida");
+				//Seleciona uma palavra aleatória
+				srand(time(NULL));
+				strcpy(palavra, comida[rand() % ITENS]);
 				break;
 			case 3:
-				fim = 1;
+				strcpy(dica, "Fruta");
+				//Seleciona uma palavra aleatória
+				srand(time(NULL));
+				strcpy(palavra, fruta[rand() % ITENS]);
 				break;
+			case 4:
+				strcpy(dica, "Profissao");
+				//Seleciona uma palavra aleatória
+				srand(time(NULL));
+				strcpy(palavra, profissao[rand() % ITENS]);
+				break;
+			case 5:
+				strcpy(dica, "Informatica");
+				//Seleciona uma palavra aleatória
+				srand(time(NULL));
+				strcpy(palavra, informatica[rand() % ITENS]);
+				break;
+			default:
+
+				break;
+			}
+			break;
+
+		case 2:
+			printf("\n Digite a dica: ");
+			scanf(" %[^\n]", dica);
+			printf("\n Digite a palavra a ser adivinhada: ");
+			scanf(" %[^\n]", palavra);
+
+			for (i = 0; i < strlen(palavra); i++) {
+				palavra[i] = toupper(palavra[i]);
+			}
+			break;
+		case 3:
+			fim = 1;
+			break;
 			}
 		} while (opc != 1 && opc != 2 && opc != 3);
 
@@ -166,6 +176,11 @@ int main() {
 
 				printf("%s", cabecalho);
 				printf("\n\n  Dica: %s   Letras usadas: ", dica);
+
+				for (i = 0; i < numLetrasUsadas; i++) {
+					printf("%c ", letrasUsadas[i]);
+
+				}
 
 				//Só pra facilitar os testes
 				//int tamanho3 = strlen(acertos);
@@ -294,7 +309,7 @@ int main() {
 					fim = 1;
 					break;
 				}
-				printf("  #######################\n\n ");
+				printf("  #######################\n\n  ");
 
 				//verifica se o usuário ganhou
 				if (strcmp(palavra, acertos) == 0) {
@@ -327,8 +342,8 @@ int main() {
 					}
 
 					if (usada == 0) {
-						letrasUsadas[l] = palpite;
-						l++;
+						letrasUsadas[numLetrasUsadas] = palpite;
+						numLetrasUsadas++;
 						contem = 0;
 						//Verifica se a palavra contém o palpite do usuário
 						//Caso tenha, a letra é colocada no seu respectivo lugar na String acertos
@@ -347,7 +362,7 @@ int main() {
 
 				}
 
-			} while (fim != 1 || usada == 1);
+			} while (fim != 1);
 
 			if (ganhou == 0) {
 				printf("\n\n  Você perdeu! =(");
