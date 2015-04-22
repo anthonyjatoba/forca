@@ -12,7 +12,7 @@ Modos de jogo:
     <li>Comida</li>
     <li>Frutas</li>
     <li>Profissões</li>
-    <li>Informatica</li>
+    <li>Informática</li>
   </ul>
   <li><b>Palavra personalizada:</b> a dica e palavra são definidas pelo usuário.</li>
 </ul>
