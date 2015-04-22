@@ -1,8 +1,8 @@
 /*
- * Forca.c
- *
- *  Created on: Apr 14, 2015
- *      Author: anthony
+ * Autor: Anthony Jatobá
+ * Data de início: 14 de abril
+ * Projeto de P1 - CC 2015.1
+ * Jogo da forca simples, com a possibilidade de usar palavras personalizadas.
  */
 
 #include<stdio.h>
@@ -34,15 +34,15 @@ int main() {
 			"PROGRAMADOR", "PADEIRO", "RELOJOEIRO", "SILVICULTOR", "TRADUTOR",
 			"VETERINARIO", "ZOOLOGO" };
 	char informatica[20][12] = { "LINUX", "WINDOWS", "C", "PROCESSADOR",
-			"TECLADO", "MOUSE", "PROGRAMA", "ALGORITMO", "HACKER", "DEBUG",
+			"TECLADO", "MOUSE", "PROGRAMA", "ALGORITMO", "HACKER", "TOUCHPAD",
 			"ASCII", "JAVA", "JAVASCRIPT", "PROGRAMADOR", "PYTHON", "INTERNET",
 			"ROTEADOR", "SERVIDOR", "GOOGLE", "APPLE" };
 
 	//Iterador para uso geral.
 	int i;
 
-	//APAGAR
-	char teste;
+	//Char usado pra voltar ao menu
+	char voltarMenu;
 
 	//Dica da palavra para o jogador.
 	char dica[20];
@@ -65,25 +65,24 @@ int main() {
 	while (opc != 3) {
 
 		//Letras usadas pelo usuário e contador de letras usadas para repetições.
-			char letrasUsadas[26];
-			int numLetrasUsadas = 0;
-			int usada;
+		char letrasUsadas[26];
+		int numLetrasUsadas = 0;
+		int usada;
 
-			//Variável de controle do fim do jogo.
-			int fim = 1;
-			//Contador de erros. 6 erros = derrota;
-			int erros = 0;
+		//Contador de erros. 6 erros = derrota;
+		int erros = 0;
 
 		do {
 
+			system("clear");
+
+			//Limpa as letras usadas
 			for (i = 0; i < strlen(letrasUsadas); i++) {
 				letrasUsadas[i] = '*';
 			}
 
-			system("clear");
-
-			//Menu
-			printf("#################################### Forca #####################################");
+			printf(
+					"#################################### Forca #####################################");
 			printf("\n\n Escolha o modo de jogo: ");
 			printf("\n\n 1 - Palavras pré-definidas: ");
 			printf("\n\n 2 - Palavra personalizada: ");
@@ -91,75 +90,69 @@ int main() {
 			printf("\n\n Opção escolhida: ");
 			scanf("%d", &opc);
 
-			switch (opc) {
-			do {
+			if (opc == 1) {
 
+				do {
+
+					system("clear");
+
+					printf(
+							"#################################### Forca #####################################");
+					printf("\n\n Escolha o tema para jogar: ");
+					printf("\n\n 1 - Animais: ");
+					printf("\n\n 2 - Comida: ");
+					printf("\n\n 3 - Frutas: ");
+					printf("\n\n 4 - Profissao: ");
+					printf("\n\n 5 - Informatica: ");
+					printf("\n\n Tema escolhido: ");
+					scanf(" %d", &tema);
+
+				} while (tema < 1 || tema > 5);
+
+				//Para gerar números aleatórios
+				srand(time(NULL));
+
+				switch (tema) {
 				case 1:
-				system("clear");
+					strcpy(dica, "Animal");
+					//Seleciona uma palavra aleatória
+					strcpy(palavra, animal[rand() % NUM_ITENS]);
+					break;
+				case 2:
+					strcpy(dica, "Comida");
+					strcpy(palavra, comida[rand() % NUM_ITENS]);
+					break;
+				case 3:
+					strcpy(dica, "Fruta");
+					strcpy(palavra, fruta[rand() % NUM_ITENS]);
+					break;
+				case 4:
+					strcpy(dica, "Profissao");
+					strcpy(palavra, profissao[rand() % NUM_ITENS]);
+					break;
+				case 5:
+					strcpy(dica, "Informatica");
+					strcpy(palavra, informatica[rand() % NUM_ITENS]);
+					break;
+				default:
+					break;
+				}
 
-				printf("#################################### Forca #####################################");
-				printf("\n\n Escolha o tema para jogar: ");
-				printf("\n\n 1 - Animais: ");
-				printf("\n\n 2 - Comida: ");
-				printf("\n\n 3 - Frutas: ");
-				printf("\n\n 4 - Profissao: ");
-				printf("\n\n 5 - Informatica: ");
-				printf("\n\n Tema escolhido: ");
-				scanf(" %d", &tema);
+			} else if (opc == 2) {
 
-			} while (tema < 1 || tema > 5);
+				printf("\n Digite a dica: ");
+				scanf(" %[^\n]", dica);
+				printf("\n Digite a palavra a ser adivinhada: ");
+				scanf(" %[^\n]", palavra);
 
-			switch (tema) {
-			case 1:
-				strcpy(dica, "Animal");
-				//Seleciona uma palavra aleatória
-				srand(time(NULL));
-				strcpy(palavra, animal[rand() % NUM_ITENS]);
-				break;
-			case 2:
-				strcpy(dica, "Comida");
-				//Seleciona uma palavra aleatória
-				srand(time(NULL));
-				strcpy(palavra, comida[rand() % NUM_ITENS]);
-				break;
-			case 3:
-				strcpy(dica, "Fruta");
-				//Seleciona uma palavra aleatória
-				srand(time(NULL));
-				strcpy(palavra, fruta[rand() % NUM_ITENS]);
-				break;
-			case 4:
-				strcpy(dica, "Profissao");
-				//Seleciona uma palavra aleatória
-				srand(time(NULL));
-				strcpy(palavra, profissao[rand() % NUM_ITENS]);
-				break;
-			case 5:
-				strcpy(dica, "Informatica");
-				//Seleciona uma palavra aleatória
-				srand(time(NULL));
-				strcpy(palavra, informatica[rand() % NUM_ITENS]);
-				break;
-			default:
+				for (i = 0; i < strlen(palavra); i++) {
+					palavra[i] = toupper(palavra[i]);
+				}
 
+			} else if (opc == 3) {
 				break;
 			}
-			break;
 
-		case 2:
-			printf("\n Digite a dica: ");
-			scanf(" %[^\n]", dica);
-			printf("\n Digite a palavra a ser adivinhada: ");
-			scanf(" %[^\n]", palavra);
-
-			for (i = 0; i < strlen(palavra); i++) {
-				palavra[i] = toupper(palavra[i]);
-			}
-			break;
-		case 3:
-			fim = 1;
-			break;
-			}
 		} while (opc != 1 && opc != 2 && opc != 3);
 
 		if (opc != 3) {
@@ -171,12 +164,12 @@ int main() {
 
 			acertos[strlen(palavra)] = '\0';
 
-			do {
-				fim = 0;
+			while (strcmp(palavra, acertos) != 0 && erros != 6) {
 
 				system("clear");
 
-				printf("#################################### Forca #####################################");
+				printf(
+						"#################################### Forca #####################################");
 				printf("\n\n  Dica: %s   Letras usadas: ", dica);
 
 				for (i = 0; i < numLetrasUsadas; i++) {
@@ -184,18 +177,12 @@ int main() {
 
 				}
 
-				//Só pra facilitar os testes
-				//int tamanho3 = strlen(acertos);
-				//printf("  %s (%d) / %s (%d)\n\n", palavra, (int) strlen(palavra),
-				//		acertos, tamanho3);
-
 				switch (erros) {
 				case 0:
 					printf("\n\n");
 					printf("  ##########***##  \n");
 					printf("  ####            \n");
 					printf("  ####            \n");
-					printf("  ##              \n");
 					printf("  ##              \n");
 					printf("  ##              \n");
 					printf("  ##              \n");
@@ -215,7 +202,6 @@ int main() {
 					printf("  ##       *o o*  \n");
 					printf("  ##       * ^ *  \n");
 					printf("  ##         *    \n");
-					printf("  ##              \n");
 					printf("  ##              \n");
 					printf("  ##              \n");
 					printf("  ##              \n");
@@ -239,7 +225,6 @@ int main() {
 					printf("  ##         |    \n");
 					printf("  ##              \n");
 					printf("  ##              \n");
-					printf("  ##              \n");
 					break;
 				case 3:
 					printf("\n\n");
@@ -254,7 +239,6 @@ int main() {
 					printf("  ##       / |    \n");
 					printf("  ##         |    \n");
 					printf("  ##         |    \n");
-					printf("  ##              \n");
 					printf("  ##              \n");
 					printf("  ##              \n");
 					break;
@@ -273,7 +257,6 @@ int main() {
 					printf("  ##         |    \n");
 					printf("  ##              \n");
 					printf("  ##              \n");
-					printf("  ##              \n");
 					break;
 				case 5:
 					printf("\n\n");
@@ -290,7 +273,6 @@ int main() {
 					printf("  ##         |    \n");
 					printf("  ##        /     \n");
 					printf("  ##       /      \n");
-					printf("  ##               \n");
 					break;
 				case 6:
 					printf("\n\n");
@@ -307,16 +289,10 @@ int main() {
 					printf("  ##         |    \n");
 					printf("  ##        / \\   \n");
 					printf("  ##       /   \\  \n");
-					printf("  ##               \n");
-					fim = 1;
 					break;
 				}
+				printf("  ##               \n");
 				printf("  #######################\n\n  ");
-
-				//verifica se o usuário ganhou
-				if (strcmp(palavra, acertos) == 0) {
-					fim = 1;
-				}
 
 				//Desenha os espaços para as letras
 				for (i = 0; i < strlen(palavra); i++) {
@@ -327,7 +303,7 @@ int main() {
 					}
 				}
 
-				if (fim != 1) {
+				if (strcmp(palavra, acertos) != 0 && erros != 6) {
 
 					usada = 0;
 
@@ -342,13 +318,14 @@ int main() {
 						}
 					}
 
+					//Se não foi usada
 					if (usada == 0) {
 						letrasUsadas[numLetrasUsadas] = palpite;
 						numLetrasUsadas++;
+
 						contemPalpite = 0;
-						//Verifica se a palavra contém o palpite do usuário
-						//Caso tenha, a letra é colocada no seu respectivo lugar na String acertos
-						//A variável contemPalpite é usada para o controle dos erros
+
+						//Verifica se a palavra contém o palpite do usuário. A variável contemPalpite é usada para o controle dos erros
 						for (i = 0; i < strlen(palavra); i++) {
 							if (palpite == palavra[i]) {
 								acertos[i] = palpite;
@@ -363,16 +340,16 @@ int main() {
 
 				}
 
-			} while (fim != 1);
+			}
 
 			if (erros == 6) {
-				printf("\n\n  Você perdeu! =(");
+				printf("\n  Você perdeu! =(\n  A palavra era %s", palavra);
 			} else {
-				printf("\n\n  Você ganhou! :D");
+				printf("\n  Você ganhou! :D A palavra era %s", palavra);
 			}
 
 			printf("\n\n  Digite alguma coisa para voltar ao menu!");
-			scanf(" %c", &teste);
+			scanf(" %c", &voltarMenu);
 		}
 
 	}
