@@ -11,12 +11,10 @@
 #include <time.h>
 
 int main() {
-	//Eu estava repetindo muito essa linha, o que poluía bastante o código
-	char cabecalho[81] =
-			"#################################### Forca #####################################";
-	//Constante de número máximo de itens por array
-	const ITENS = 20;
-	//Vetor de 20 strings de até 12 caracteres
+	//Constante do número de ítens por tema. Usada para randomizar um tema.
+	const NUM_ITENS = 20;
+
+	//Vetores com as palavras possíveis. A declaração do tamanho deve ser manual, pois C não permite que a constante seja declarada como dimensão do array.
 	char animal[20][12] = { "AVESTRUZ", "BORBOLETA", "CARANGUEJO",
 			"ORANGOTANGO", "CROCODILO", "DROMEDARIO", "ROUXINOL", "CENTOPEIA",
 			"GAFANHOTO", "PINTASSILGO", "HIPOPOTAMO", "LEOPARDO", "GUAXINIM",
@@ -40,37 +38,41 @@ int main() {
 			"ASCII", "JAVA", "JAVASCRIPT", "PROGRAMADOR", "PYTHON", "INTERNET",
 			"ROTEADOR", "SERVIDOR", "GOOGLE", "APPLE" };
 
-	char palavra[12];
-	char acertos[12];
-	char dica[20];
-	char palpite;
-
-	int fim = 0;
+	//Iterador para uso geral.
 	int i;
 
-	int ganhou = 0;
-	int contem = 0;
-	int erros = 0;
-
+	//APAGAR
 	char teste;
 
-	//Variáveis de opção dos menus
+	//Dica da palavra para o jogador.
+	char dica[20];
+	//Palavra que o jogador deve acertar. Pode ser uma da lista acima ou personalizada.
+	char palavra[12];
+	//Variável usada para controle dos acertos do usuário. Cada letra acertada é colocada em sua posição nessa string. Quando <acertos> == <palavra>, o jogador acertou.
+	char acertos[12];
+
+	//Palpite do jogador.
+	char palpite;
+
+	//Variável de controle; 0 = não contem o
+	int contemPalpite = 0;
+
+	//Variáveis de opção dos menus de jogo e de tema.
 	int opc = 0;
 	int tema = 0;
 
+	//O programa é executado enquanto opc != 3 (sair no menu);
 	while (opc != 3) {
 
-		//Reseta as variáveis
-		ganhou = 0;
-		fim = 0;
-		erros = 0;
+		//Letras usadas pelo usuário e contador de letras usadas para repetições.
+			char letrasUsadas[26];
+			int numLetrasUsadas = 0;
+			int usada;
 
-		int numLetrasUsadas = 0;
-
-		char letrasUsadas[26];
-		numLetrasUsadas = 0;
-
-		int usada = 0;
+			//Variável de controle do fim do jogo.
+			int fim = 1;
+			//Contador de erros. 6 erros = derrota;
+			int erros = 0;
 
 		do {
 
@@ -81,7 +83,7 @@ int main() {
 			system("clear");
 
 			//Menu
-			printf("%s", cabecalho);
+			printf("#################################### Forca #####################################");
 			printf("\n\n Escolha o modo de jogo: ");
 			printf("\n\n 1 - Palavras pré-definidas: ");
 			printf("\n\n 2 - Palavra personalizada: ");
@@ -95,7 +97,7 @@ int main() {
 				case 1:
 				system("clear");
 
-				printf("%s", cabecalho);
+				printf("#################################### Forca #####################################");
 				printf("\n\n Escolha o tema para jogar: ");
 				printf("\n\n 1 - Animais: ");
 				printf("\n\n 2 - Comida: ");
@@ -112,31 +114,31 @@ int main() {
 				strcpy(dica, "Animal");
 				//Seleciona uma palavra aleatória
 				srand(time(NULL));
-				strcpy(palavra, animal[rand() % ITENS]);
+				strcpy(palavra, animal[rand() % NUM_ITENS]);
 				break;
 			case 2:
 				strcpy(dica, "Comida");
 				//Seleciona uma palavra aleatória
 				srand(time(NULL));
-				strcpy(palavra, comida[rand() % ITENS]);
+				strcpy(palavra, comida[rand() % NUM_ITENS]);
 				break;
 			case 3:
 				strcpy(dica, "Fruta");
 				//Seleciona uma palavra aleatória
 				srand(time(NULL));
-				strcpy(palavra, fruta[rand() % ITENS]);
+				strcpy(palavra, fruta[rand() % NUM_ITENS]);
 				break;
 			case 4:
 				strcpy(dica, "Profissao");
 				//Seleciona uma palavra aleatória
 				srand(time(NULL));
-				strcpy(palavra, profissao[rand() % ITENS]);
+				strcpy(palavra, profissao[rand() % NUM_ITENS]);
 				break;
 			case 5:
 				strcpy(dica, "Informatica");
 				//Seleciona uma palavra aleatória
 				srand(time(NULL));
-				strcpy(palavra, informatica[rand() % ITENS]);
+				strcpy(palavra, informatica[rand() % NUM_ITENS]);
 				break;
 			default:
 
@@ -174,7 +176,7 @@ int main() {
 
 				system("clear");
 
-				printf("%s", cabecalho);
+				printf("#################################### Forca #####################################");
 				printf("\n\n  Dica: %s   Letras usadas: ", dica);
 
 				for (i = 0; i < numLetrasUsadas; i++) {
@@ -314,7 +316,6 @@ int main() {
 				//verifica se o usuário ganhou
 				if (strcmp(palavra, acertos) == 0) {
 					fim = 1;
-					ganhou = 1;
 				}
 
 				//Desenha os espaços para as letras
@@ -344,18 +345,18 @@ int main() {
 					if (usada == 0) {
 						letrasUsadas[numLetrasUsadas] = palpite;
 						numLetrasUsadas++;
-						contem = 0;
+						contemPalpite = 0;
 						//Verifica se a palavra contém o palpite do usuário
 						//Caso tenha, a letra é colocada no seu respectivo lugar na String acertos
-						//A variável contem é usada para o controle dos erros
+						//A variável contemPalpite é usada para o controle dos erros
 						for (i = 0; i < strlen(palavra); i++) {
 							if (palpite == palavra[i]) {
 								acertos[i] = palpite;
-								contem = 1;
+								contemPalpite = 1;
 							}
 						}
 
-						if (contem == 0) {
+						if (contemPalpite == 0) {
 							erros++;
 						}
 					}
@@ -364,7 +365,7 @@ int main() {
 
 			} while (fim != 1);
 
-			if (ganhou == 0) {
+			if (erros == 6) {
 				printf("\n\n  Você perdeu! =(");
 			} else {
 				printf("\n\n  Você ganhou! :D");
